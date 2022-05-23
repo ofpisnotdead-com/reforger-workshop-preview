@@ -15,11 +15,11 @@ export class WorkshopBrowser extends LitElement {
       padding: 0%;
       margin: 0;
       box-sizing: border-box;
-      font-family: "Arimo", sans-serif;
     }
 
     section {
       display: flex;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -28,28 +28,32 @@ export class WorkshopBrowser extends LitElement {
       background-color: #565C54;
       flex: 1 1 300px;
       max-width: 500px;
-      margin: 10px;
+      justify-content: space-between;
+
+      display: flex;
+      flex-direction: column;
     }
 
-    article h1,
-    article h2 {
-      background-color: #e2a750;
-      padding: 0 10px;
+    section#title, section#summary {
+      padding: 10px;
     }
 
-    article h1 {
+    section#summary {
+      flex: 1;
+    }
+
+    section#title h1 {
       font-size: 1.5em;
-      padding-top: 10px;
     }
 
-    article h2 {
-      font-size: 1.2em;
-      padding-bottom: 10px;
+    section#title h2 {
+      font-size: 1.25em;
     }
 
-    article p {
-      margin: 10px 0;
-      padding: 0 10px;
+    section#title {
+      flex-direction: column;
+      background-color: #e2a750;
+      gap: 0;
     }
 
     article img {
@@ -57,7 +61,7 @@ export class WorkshopBrowser extends LitElement {
     }
 
     header {
-      margin: 10px;
+      margin-bottom: 10px;
     }
   `;
 
@@ -76,18 +80,24 @@ export class WorkshopBrowser extends LitElement {
   render() {
     return html`
       <header>
-        <h1>Arma Reforger Workshop unofficial <i>sneak-peak</i> browser</h1>
-        <h2>updated at ${this.workshopApi.lastUpdate}</h2>
-        <h3>ordered by popularity</h3>
+        <h3>updated at ${this.workshopApi.lastUpdate}, ordered by popularity</h3>
       </header>
       <section>
         ${this.items.map(
           (item, i) =>
             html`<article>
-              <h1>${item.name}</h1>
-              <h2>by ${item.author}</h2>
+              <section id="title">
+                <h1>${item.name}</h1>
+                <h2>by ${item.author}</h2>
+              </section>
+
+              <section id="photo">
+                ${item.preview ? html`<img src=${item.preview} />` : null}
+              </section>
+
+              <section id="summary">
               <p>${item.summary}</p>
-              ${item.preview ? html`<img src=${item.preview} />` : null}
+              </section>
             </article>`
         )}
       </section>

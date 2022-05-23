@@ -15,17 +15,39 @@
         margin: 0;
         box-sizing: border-box;
         color: white;
+        font-family: "Arimo", sans-serif;
       }
 
       body {
-        background-color: #303030;
+        background-image: url('bg_map.webp');
+        background-attachment: fixed;
+        margin: 20px;
       }
 
       workshop-browser {
         display: block;
-        margin: 10px;
+      }
+
+      #logo {
+        width: 84px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+      }
+
+      header h1 {
+        padding-left: 10px;
+        padding-top: 4px;
+        font-size: 2.5em;
       }
     </style>
+
+    <header>
+      <img id="logo" src="reforger_white.svg" />
+      <h1>unofficial <i>sneak-peak</i> browser</h1>
+    </header>
     <workshop-browser></workshop-browser>
 
     <script src="src/index.ts"></script>
