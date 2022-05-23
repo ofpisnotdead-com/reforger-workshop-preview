@@ -26,6 +26,7 @@
 
       workshop-browser {
         display: block;
+        padding-bottom: 40px;
       }
 
       #logo {
@@ -42,6 +43,24 @@
         padding-top: 4px;
         font-size: 2.5em;
       }
+
+      footer {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        left: 0px;
+        bottom: 0px;
+        height: 40px;
+        width: 100%;
+        background: #222f34;
+      }
+      
+      footer article {
+        display: flex;
+        flex: 1;
+        margin-left: 25px;
+        flex-wrap: wrap;
+      }
     </style>
 
     <header>
@@ -49,6 +68,11 @@
       <h1>unofficial workshop <i>sneak-peak</i></h1>
     </header>
     <workshop-browser></workshop-browser>
+
+    <footer>
+      <article>
+        <p>&#9829; by ofpisnotdead.com (@ me at <a target="_blank" href="https://twitter.com/ofpnotdead">Twitter</a>, <a target="_blank" href="https://discordapp.com/users/372121409968668682">Discord</a>, <a target="_blank" href="https://github.com/ofpisnotdead-com/reforger-workshop-preview">GitHub)</p></article>
+    </footer>
 
     <script src="src/index.ts"></script>
   </body>
