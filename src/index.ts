@@ -92,7 +92,7 @@ export class WorkshopBrowser extends LitElement {
               </section>
 
               <section id="photo">
-                ${item.preview ? html`<img src=${item.preview} />` : null}
+                ${item.preview ? html`<img loading="lazy" src=${item.preview} />` : null}
               </section>
 
               <section id="summary">
