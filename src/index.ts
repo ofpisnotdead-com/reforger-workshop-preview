@@ -3,11 +3,28 @@ import { customElement, state } from "lit/decorators.js";
 import WorkshopApi from "./lib/workshop-api";
 import { Item } from "./lib/Item";
 
+function formatPercent(number: number): Number {
+  return number * 100;
+}
+
+const unitlist = ["", "K", "M", "G"];
+function humanizeNumber(number: number): string {
+  let sign = Math.sign(number);
+  let unit = 0;
+
+  while (Math.abs(number) > 1000) {
+    unit = unit + 1;
+    number = Math.floor(Math.abs(number) / 100) / 10;
+  }
+  return sign * Math.abs(number) + unitlist[unit];
+}
+
 // Registers the element
 @customElement("workshop-browser")
 export class WorkshopBrowser extends LitElement {
   @state() workshopApi!: WorkshopApi;
   @state() items: Item[] = [];
+  @state() loading: Boolean = true;
 
   // Styles are applied to the shadow root and scoped to this element
   static styles = css`
@@ -25,7 +42,7 @@ export class WorkshopBrowser extends LitElement {
 
     article {
       border: 1px solid black;
-      background-color: #565C54;
+      background-color: #565c54;
       flex: 1 1 300px;
       max-width: 500px;
       justify-content: space-between;
@@ -34,7 +51,8 @@ export class WorkshopBrowser extends LitElement {
       flex-direction: column;
     }
 
-    section#title, section#summary {
+    section#title,
+    section#summary {
       padding: 10px;
     }
 
@@ -56,6 +74,14 @@ export class WorkshopBrowser extends LitElement {
       gap: 0;
     }
 
+    section#stats {
+      background-color: #222f34;
+      font-size: 1.25em;
+      justify-content: space-between;
+      font-weight: bold;
+      padding: 10px;
+    }
+
     article img {
       width: 100%;
     }
@@ -74,13 +100,20 @@ export class WorkshopBrowser extends LitElement {
   loadItems() {
     this.workshopApi.loadItems().then((items) => {
       this.items = items;
+      this.loading = false;
     });
   }
 
   render() {
+    return this.loading ? html`<h2>loading...</h2>` : this.renderWorkshop();
+  }
+
+  renderWorkshop() {
     return html`
       <header>
-        <h3>updated at ${this.workshopApi.lastUpdate}, ordered by popularity</h3>
+        <h3>
+          updated at ${this.workshopApi.lastUpdate}, ordered by popularity
+        </h3>
       </header>
       <section>
         ${this.items.map(
@@ -90,13 +123,22 @@ export class WorkshopBrowser extends LitElement {
                 <h1>${item.name}</h1>
                 <h2>by ${item.author}</h2>
               </section>
-
+              <section id="stats">
+                <div title="${item.ratingCount} ratings">
+                  ${formatPercent(item.averageRating)}% rating
+                </div>
+                <div title="${item.subscriberCount} subs">
+                  ${humanizeNumber(item.subscriberCount)} subs
+                </div>
+              </section>
               <section id="photo">
-                ${item.preview ? html`<img loading="lazy" src=${item.preview} />` : null}
+                ${item.preview
+                  ? html`<img loading="lazy" src=${item.preview} />`
+                  : null}
               </section>
 
               <section id="summary">
-              <p>${item.summary}</p>
+                <p>${item.summary}</p>
               </section>
             </article>`
         )}
