@@ -1,7 +1,7 @@
 import { Item } from "./Item";
 
 export default class WorkshopApi {
-  url: string = "https://master.ofpisnotdead.com/reforger-workshop.json";
+  url: string = "https://files.ofpisnotdead.com/reforger-workshop.json";
   lastUpdate: string;
   items: Item[] = [];
 
