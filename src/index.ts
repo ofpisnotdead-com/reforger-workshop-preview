@@ -82,6 +82,12 @@ export class WorkshopBrowser extends LitElement {
       padding: 10px;
     }
 
+    section#stats .scenarios {
+      flex: 1 1 100%;
+      text-align: right;
+      cursor: pointer;
+    }
+
     article img {
       width: 100%;
     }
@@ -104,6 +110,24 @@ export class WorkshopBrowser extends LitElement {
     });
   }
 
+  scenariosTitle(scenariosIds: Array<string>) {
+    if (scenariosIds.length > 0) {
+      let texts = [...scenariosIds];
+      texts.push("");
+      texts.push("click to copy to clipboard");
+      return texts.join("\n");
+    } else {
+      return "no scenarios";
+    }
+  }
+
+  copyScenarios(scenariosIds: Array<string>) {
+    if (scenariosIds.length > 0) {
+      navigator.clipboard.writeText(scenariosIds.join("\n"));
+      alert("Copied to clipboard!");
+    }
+  }
+
   render() {
     return this.loading ? html`<h2>loading...</h2>` : this.renderWorkshop();
   }
@@ -124,17 +148,33 @@ export class WorkshopBrowser extends LitElement {
                 <h2>by ${item.author}</h2>
               </section>
               <section id="stats">
-                <div title="${item.ratingCount} ratings">
+                <div title="${item.ratingCount} class="ratings">
                   ${formatPercent(item.averageRating)}% rating
                 </div>
-                <div title="${item.subscriberCount} subs">
+                <div title="${item.subscriberCount} class="subs">
                   ${humanizeNumber(item.subscriberCount)} subs
+                </div>
+                <div
+                  title="${this.scenariosTitle(item.scenariosIds)}"
+                  class="scenarios"
+                  @click="${() => this.copyScenarios(item.scenariosIds)}"
+                  data-clipboard-text="${item.scenariosIds.join("\n")}"
+                >
+                  ${
+                    item.scenariosIds.length > 0
+                      ? item.scenariosIds.length === 1
+                        ? html`1 scenario`
+                        : html`${item.scenariosIds.length} scenarios`
+                      : html`no scenarios`
+                  }
                 </div>
               </section>
               <section id="photo">
-                ${item.preview
-                  ? html`<img loading="lazy" src=${item.preview} />`
-                  : null}
+                ${
+                  item.preview
+                    ? html`<img loading="lazy" src=${item.preview} />`
+                    : null
+                }
               </section>
 
               <section id="summary">

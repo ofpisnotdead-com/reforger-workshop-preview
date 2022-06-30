@@ -10,4 +10,5 @@ export interface Item {
   ratingCount: number;
   subscriberCount: number;
   averageRating: number;
+  scenariosIds: Array<string>;
 }
